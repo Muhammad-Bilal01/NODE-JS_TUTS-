@@ -2,6 +2,7 @@ import express from "express";
 import { userSchema } from "./schema/index.js";
 import chalk from "chalk";
 import { router } from "./routes/index.js";
+import mongoose from "./db/index.js";
 
 const log = console.log;
 
@@ -10,6 +11,15 @@ const app = express();
 const PORT = 8080;
 
 app.use(express.json());
+
+// Database Connectivity
+mongoose.connection.on("open", () => {
+  console.log("MongoDB is Connected");
+});
+
+mongoose.connection.on("error", (error) => {
+  console.error("Database Error ", error);
+});
 
 // middleware
 app.use("/", (req, res, next) => {
